@@ -12,7 +12,7 @@ export class CommandHandler {
      * 
      * @param folder Exact Folder Location
      */
-    load(folder : string){
+    load(folder : string): void{
         if(fs.existsSync(folder)){
             var folders = fs.readdirSync(folder)
             if(folders.length !== 0){
@@ -42,7 +42,7 @@ export class CommandHandler {
      * @param client Client that was created
      * @param args Rest arguements of message
      */
-    run(command_name:string, message : Message , client : Client, args : string[]){
+    run(command_name:string, message : Message , client : Client, args : string[]): void{
         var folder = this.get(command_name) as string
         const { execute } = require('../' + folder)
         execute(message, client, args);
@@ -70,7 +70,7 @@ export class ComponentsHandler {
      * 
      * @param folder Exact Folder Location
      */
-    load(folder : string){
+    load(folder : string): void{
         if(fs.existsSync(folder)){
             var folders = fs.readdirSync(folder)
             if(folders.length !== 0){
@@ -100,7 +100,7 @@ export class ComponentsHandler {
      * @param client Client that was created
      * @param args Rest arguements of message
      */
-    run(command_name:string, message : Message , client : Client, args : string[]){
+    run(command_name:string, message : Message , client : Client, args : string[]): void{
         var folder = this.get(command_name) as string
         const { execute } = require('../' + folder)
         execute(message, client, args);
@@ -128,7 +128,7 @@ export class SlashHandler {
      * 
      * @param folder Exact Folder Location
      */
-    load(folder : string){
+    load(folder : string): void{
         if(fs.existsSync(folder)){
             var folders = fs.readdirSync(folder)
             if(folders.length !== 0){
@@ -158,7 +158,7 @@ export class SlashHandler {
      * @param client Client that was created
      * @param args Rest arguements of message
      */
-    run(command_name:string, message : Message , client : Client, args : string[]){
+    run(command_name:string, message : Message , client : Client, args : string[]): void{
         var folder = this.get(command_name) as string
         const { execute } = require('../' + folder)
         execute(message, client, args);
