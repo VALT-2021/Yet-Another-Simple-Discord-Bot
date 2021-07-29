@@ -1,5 +1,5 @@
 import * as discord from "discord.js"
-import { CommandHandler, SlashHandler, ComponentsHandler } from "./allinonehandler"
+import { CommandHandler, SlashHandler, ComponentsHandler } from "./handler"
 
 export class Client extends discord.Client {
     public commands: CommandHandler;

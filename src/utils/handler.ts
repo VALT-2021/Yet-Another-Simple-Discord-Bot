@@ -35,12 +35,24 @@ export class CommandHandler {
         return this.__commands.get(command_name.toLowerCase())
     }
 
+    /**
+     * 
+     * @param command_name Command you want to run
+     * @param message Message Class of Discord
+     * @param client Client that was created
+     * @param args Rest arguements of message
+     */
     run(command_name:string, message : Message , client : Client, args : string[]){
         var folder = this.get(command_name) as string
         const { execute } = require('../' + folder)
         execute(message, client, args);
     }
 
+    /**
+     * 
+     * @param command_name Command that you want to validate
+     * @returns true or false
+     */
     valid(command_name:string): boolean{
         var command = this.get(command_name)
         if(command !== undefined) return true
@@ -81,12 +93,24 @@ export class ComponentsHandler {
         return this.__components.get(command_name.toLowerCase())
     }
 
+    /**
+     * 
+     * @param command_name Command you want to run
+     * @param message Message Class of Discord
+     * @param client Client that was created
+     * @param args Rest arguements of message
+     */
     run(command_name:string, message : Message , client : Client, args : string[]){
         var folder = this.get(command_name) as string
         const { execute } = require('../' + folder)
         execute(message, client, args);
     }
 
+    /**
+     * 
+     * @param command_name Command that you want to validate
+     * @returns true or false
+     */
     valid(command_name:string): boolean{
         var command = this.get(command_name)
         if(command !== undefined) return true
@@ -127,12 +151,24 @@ export class SlashHandler {
         return this.__slash.get(command_name.toLowerCase())
     }
 
+    /**
+     * 
+     * @param command_name Command you want to run
+     * @param message Message Class of Discord
+     * @param client Client that was created
+     * @param args Rest arguements of message
+     */
     run(command_name:string, message : Message , client : Client, args : string[]){
         var folder = this.get(command_name) as string
         const { execute } = require('../' + folder)
         execute(message, client, args);
     }
 
+    /**
+     * 
+     * @param command_name Command that you want to validate
+     * @returns true or false
+     */
     valid(command_name:string): boolean{
         var command = this.get(command_name)
         if(command !== undefined) return true
