@@ -2,7 +2,7 @@ import Discord from 'discord.js'
 import { Client } from './utils/client'
 import * as auth from './auth.json'
 
-const prefix = '+'
+const prefix = auth.prefix
 const client = new Client({
     intents : [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_VOICE_STATES ]
 })
