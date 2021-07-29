@@ -1,8 +1,9 @@
 {
   "name": "Yet-Another-Simple-Discord-Bot",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "not so simple",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,8 +12,8 @@
     "url": "git+https://github.com/VALT-2021/Yet-Another-Simple-Discord-Bot.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "VALT-2021 & Killer069",
+  "license": "MIT",
   "type": "module",
   "bugs": {
     "url": "https://github.com/VALT-2021/Yet-Another-Simple-Discord-Bot/issues"
