@@ -9,7 +9,7 @@
 		"lib": ["ESNext"],
 		"sourceMap": true,
 		"inlineSources": true,
-		"module": "commonjs",
+		"module": "ES6",
 		"declaration": true,
 		"declarationMap": true,
 		"outDir": "dist",
