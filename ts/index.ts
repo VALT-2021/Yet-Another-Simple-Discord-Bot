@@ -1,6 +1,5 @@
-import Discord from 'discord.js'
-import Client from '../utils/client'
-import Handler from '../utils/handler'
+import Client from '../utils/ts/client'
+import Handler from '../utils/ts/handler'
 
 const client = new Client({
     intents: [
@@ -12,5 +11,5 @@ const handler = new Handler('./ts/discordCommands', './ts/discordComponents')
 handler.init()
 
 client.once('ready', () => {
-    console.log('Ready Client ' + client.user.username)
+    console.log('Ready Client')
 })
