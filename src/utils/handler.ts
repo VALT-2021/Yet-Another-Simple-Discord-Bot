@@ -70,7 +70,6 @@ export class CommandHandler {
     run(command_name: string, message : Message, client : Client, args : string[]){
         var command = this.get(command_name)
         if(!command) return console.error(`Error : Command ${command_name} doesn\' t exists`)
-        client.embed.clear()
 
         if(command.bot_permissions !== undefined){
             var perm = command.bot_permissions

@@ -9,6 +9,6 @@ export = {
     message.channel.send('Command Handler = Said HELLO')
     },
     "args" : ['<int>'],
-    "argsError" : "You have typed args wrong",
+    "argsError" : "You have errors in arguments",
     "permissions" : [Permissions.BAN_MEMBERS]
 }
