@@ -1,15 +1,27 @@
-import Client from '../utils/ts/client'
-import Handler from '../utils/ts/handler'
+import {
+    Client
+} from './utils/client'
 
 const client = new Client({
     intents: [
-        'GUILDS'
+        'GUILDS',
+        'GUILD_VOICE_STATES'
     ]
 })
 
-const handler = new Handler('./ts/discordCommands', './ts/discordComponents')
-handler.init()
+client.slashCommands.init()
+client.components.init()
 
-client.once('ready', () => {
-    console.log('Ready Client')
+client.on('interaction', async interaction => {
+    if (interaction.inGuild()) {
+        if (interaction.isCommand()) try {
+            client.slashCommands.execute(interaction.commandName.toLowerCase())
+        } catch(e) {
+            console.log(e)
+        } else if (interaction.isMessageComponent()) try {
+            client.components.execute(interaction.componentType.toLowerCase() + interaction.customId.slice(0, 6).toLowerCase())
+        } catch(e) {
+            console.log(e)
+        }
+    }
 })
