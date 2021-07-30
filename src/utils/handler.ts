@@ -93,7 +93,7 @@ export class CommandHandler {
                 }
             }
         }
-        console.log(command.args)
+        
         if(command?.args) {
             var args_check = this.args_checker(command.args, args)
             if(args_check === Args_error.Float || args_check === Args_error.String || args_check === Args_error.Integer){
@@ -167,20 +167,23 @@ export class CommandHandler {
     }
 
     private args_checker(template_args : string[], args : string[]) : boolean | Args_error{
-        for(var x in args){
+        for(var x in template_args){
             if(template_args[x] === '<int>'){
                 var number = parseInt(args[x])
                 if(number === NaN) return Args_error.Integer
+                else if(!number) return Args_error.Integer
                 else continue
             }
             else if(template_args[x] === '<float>'){
                 var number = parseFloat(args[x])
                 if(number === NaN) return Args_error.Float
+                else if(!number) return Args_error.Float
                 else continue
             }
             else if(template_args[x] === '<string>'){
                 var string = typeof(args[x])
                 if(string !== 'string') return Args_error.String
+                else if(!string) return Args_error.String
                 else continue
             }
         }

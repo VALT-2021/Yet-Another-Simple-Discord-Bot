@@ -15,10 +15,12 @@ client.on('ready', () => {
 
 client.on('messageCreate', (message) => {
     if(message.channel.type !== 'GUILD_TEXT') return
-	let args = message.content.slice(prefix.length).trim().split(' ')
-    let cmd = args.shift()?.toLowerCase() as string
-    if(client.commands.valid(cmd)){
-        client.commands.run(cmd, message, client, args)
+    if(message.content.startsWith(prefix)){
+        let args = message.content.slice(prefix.length).trim().split(' ')
+        let cmd = args.shift()?.toLowerCase() as string
+        if(client.commands.valid(cmd)){
+            client.commands.run(cmd, message, client, args)
+        }
     }
 })
 

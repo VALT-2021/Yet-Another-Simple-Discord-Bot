@@ -1,5 +1,6 @@
 import { Message } from "discord.js";
 import { Client } from "../utils/client";
+import { Permissions } from "../utils/permissions";
 
 export = { 
     "commands" : "help",
@@ -8,5 +9,6 @@ export = {
     message.channel.send('Command Handler = Said HELLO')
     },
     "args" : ['<int>'],
-    "argsError" : "You have typed args wrong"
+    "argsError" : "You have typed args wrong",
+    "permissions" : [Permissions.BAN_MEMBERS]
 }
