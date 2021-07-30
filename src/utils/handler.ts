@@ -10,6 +10,9 @@ enum Args_error {
     Integer = 'Integer',
     Float = 'Float',
     String = 'String',
+    User = 'User',
+    Channel = 'Channel',
+    Roles = 'Role'
 }
 
 interface CommandHandlerOptions {
@@ -95,7 +98,7 @@ export class CommandHandler {
         
         if(command?.args) {
             var args_check = this.args_checker(command.args, args)
-            if(args_check === Args_error.Float || args_check === Args_error.String || args_check === Args_error.Integer){
+            if(args_check === Args_error.Float || args_check === Args_error.String || args_check === Args_error.Integer || args_check === Args_error.User || args_check === Args_error.Roles || args_check === Args_error.Channel){
                 this.args_error(message, command)
                 return
             }
@@ -183,6 +186,24 @@ export class CommandHandler {
                 var string = typeof(args[x])
                 if(string !== 'string') return Args_error.String
                 else if(!string) return Args_error.String
+                else continue
+            }
+            else if(template_args[x] === '<user>'){
+                var string = typeof(args[x])
+                if(string !== 'string' || !string) return Args_error.User
+                else if(!string.startsWith('<@!') && !string.endsWith('>')) return Args_error.User
+                else continue
+            }
+            else if(template_args[x] === '<channel>'){
+                var string = typeof(args[x])
+                if(string !== 'string' || !string) return Args_error.Channel
+                else if(!string.startsWith('<#') && !string.endsWith('>')) return Args_error.Channel
+                else continue
+            }
+            else if(template_args[x] === '<role>'){
+                var string = typeof(args[x])
+                if(string !== 'string' || !string) return Args_error.Roles
+                else if(!string.startsWith('<@&') && !string.endsWith('>')) return Args_error.Roles
                 else continue
             }
         }
