@@ -24,4 +24,5 @@ coverage/
 # Documentation
 docs/
 
-src/auth.json
+ts/auth.json
+ts/auth.json

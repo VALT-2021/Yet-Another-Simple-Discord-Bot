@@ -6,6 +6,8 @@ export class SlashCommandHandler {
 
     constructor(path: string) {
         this.path = path
+        this.slash = new Map()
+        
     }
 
     public async init() {
@@ -27,6 +29,7 @@ export class ComponentHandler {
 
     constructor(path: string) {
         this.path = path
+        this.component = new Map()
     }
 
     public async init() {

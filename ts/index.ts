@@ -1,6 +1,7 @@
 import {
     Client
 } from './utils/client'
+import { token, prefix } from './auth.json'
 
 const client = new Client({
     intents: [
@@ -25,3 +26,5 @@ client.on('interaction', async interaction => {
         }
     }
 })
+
+client.login(token)
