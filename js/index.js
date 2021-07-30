@@ -1,15 +1,32 @@
 "use strict";
-exports.__esModule = true;
-var discord_1 = require('discord.js')
-var handler_1 = require("../utils/js/handlerhandler");
-var client = new discord_1.Client({
+Object.defineProperty(exports, "__esModule", { value: true });
+const client_1 = require("./utils/client");
+const auth_json_1 = require("./auth.json");
+const client = new client_1.Client({
     intents: [
-        'GUILDS'
+        'GUILDS',
+        'GUILD_VOICE_STATES'
     ]
 });
-
-var handler = new handler_1['default']('./js/discordCommands', './js/discordComponents');
-handler.init();
-client.once('ready', function () {
-    console.log('Ready Client ' + client.user.username);
+client.slashCommands.init();
+client.components.init();
+client.on('interaction', async (interaction) => {
+    if (interaction.inGuild()) {
+        if (interaction.isCommand())
+            try {
+                client.slashCommands.execute(interaction.commandName.toLowerCase());
+            }
+            catch (e) {
+                console.log(e);
+            }
+        else if (interaction.isMessageComponent())
+            try {
+                client.components.execute(interaction.componentType.toLowerCase() + interaction.customId.slice(0, 6).toLowerCase());
+            }
+            catch (e) {
+                console.log(e);
+            }
+    }
 });
+client.login(auth_json_1.token);
+//# sourceMappingURL=index.js.map
