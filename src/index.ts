@@ -8,6 +8,7 @@ const client = new Client({
 })
 
 client.commands.load('./commands/')
+client.components.load('./components/')
 
 client.on('ready', () => {
     console.log(`We have logged in as ${client.user?.tag}`)
@@ -24,4 +25,4 @@ client.on('messageCreate', (message) => {
     }
 })
 
-client.login(auth.token)
+// client.login(auth.token)

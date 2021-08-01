@@ -17,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/VALT-2021/Yet-Another-Simple-Discord-Bot/issues"
   },
-  "homepage": "https://github.com/VALT-2021/Yet-Another-Simple-Discord-Bot#readme"
+  "homepage": "https://github.com/VALT-2021/Yet-Another-Simple-Discord-Bot#readme",
+  "dependencies": {
+    "@discordjs/voice": "^0.5.5",
+    "discord.js": "^13.0.0-dev.t1627732975.331a9d3"
+  }
 }

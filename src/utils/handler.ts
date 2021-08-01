@@ -66,7 +66,6 @@ export class CommandHandler {
                     if(typeof options.args === 'string') options.args = [options.args]
                     if(typeof options.permissions === 'string') options.permissions = [options.permissions]
                     if(typeof options.bot_permissions === 'string') options.permissions = [options.bot_permissions]
-                    if(typeof options.requiredroles === 'string') options.requiredroles = [options.requiredroles]
                     for(var command of options.commands){
                         this.__set(command, options)
                         this.set(command, options)
@@ -175,6 +174,10 @@ export class CommandHandler {
         else return true
     }
 
+    help(command_name:string, message:Message) : void{
+        this.get(command_name)?.help(message)
+    }
+
     private cooldown_end(command_name:string, author_id : string){
         var cool_map = this.__get(command_name)
         if(cool_map){
@@ -244,26 +247,25 @@ export class CommandHandler {
     }
 }
 
-interface ComponentsHandlerOptions {
-    commands : Array<string>;
-    permissionError? : string | Embed;
+export interface ComponentsHandlerOptions {
+    components : Array<string> | string;
+    component_type : ComponentType;
     permissions? : Array<Permissions>;
     bot_permissions? : Array<Permissions>;
-    bot_permissionError? : string | Embed;
-    requiredroles? : Array<string>;
     execute(message : Message, client : Client, args : Array<string>) : void;
-    help(message : Message) : void;
-    cooldown? : number;
-    cooldownError? : string | Embed;
+    error?(error : Error_type, message : Message, client : Client, options : Permissions_options ) : void
+}
+
+export enum ComponentType{
+    Button = 'BUTTON',
+    Select_menu = 'SELECT'
 }
 
 export class ComponentsHandler{
     private __components : Map<string, any>
-    private __cooldowns : Map<string, Map<string, number>>
 
     constructor(){
         this.__components = new Map()
-        this.__cooldowns = new Map()
     }
 
     load(folder : string){
@@ -273,14 +275,11 @@ export class ComponentsHandler{
             if(files){
                 for(var file of files){
                     file = join(path, file)
-                    const options = require(file)
-                    if(typeof options.commands === 'string') options.commands = [options.commands]
-                    if(typeof options.args === 'string') options.args = [options.args]
+                    const options = require(file).components
+                    if(typeof options.components === 'string') options.components = [options.components]
                     if(typeof options.permissions === 'string') options.permissions = [options.permissions]
-                    if(typeof options.bot_permissions === 'string') options.permissions = [options.permissions]
-                    if(typeof options.requiredroles === 'string') options.requiredroles = [options.requiredroles]
-                    for(var command of options.commands){
-                        this.__set(command, options)
+                    if(typeof options.bot_permissions === 'string') options.permissions = [options.bot_permissions]
+                    for(var command of options.components){
                         this.set(command, options)
                     }
                 }
@@ -290,26 +289,57 @@ export class ComponentsHandler{
         else console.log(`No Folder found by the name of ${folder}`)
     }
 
-    private __set(command_name : string, options : Object): Map<string, Map<string, number>>{
-        this.__cooldowns.set(command_name, new Map<string, number>())
-        return this.__cooldowns
-    }
-
-    private set(command_name : string, options : Object): Map<string, Object>{
-        this.__components.set(command_name, options)
+    private set(command_name : string, options : ComponentsHandlerOptions): Map<string, Object>{
+        var new_name = options.component_type + '_' + command_name
+        this.__components.set(new_name, options)
         return this.__components
     }
 
-    private __get(command_name: string): Map<string, number> | undefined{
-        var command = this.__cooldowns.get(command_name)
-        if(command === undefined) return undefined
-        else return command
-    }
-
-    private get(command_name: string): CommandHandlerOptions | undefined{
+    private get(command_name: string, component_type : ComponentType): ComponentsHandlerOptions | undefined{
+        var new_name = component_type + '_' + command_name
         var command = this.__components.get(command_name)
         if(command === undefined) return undefined
-        else return command as CommandHandlerOptions
+        else return command as ComponentsHandlerOptions
+    }
+
+    private on_error(command_name: string ,error : Error_type, message : Message, client : Client, options : Permissions_options, component_type : ComponentType){
+        var command = this.get(command_name, component_type)
+        if(command && command.error) command.error(error, message, client, options)
+    }
+
+    run(command_name: string, message : Message, client : Client, args : string[], component_type : ComponentType){
+        var command = this.get(command_name, component_type)
+        if(!command) return console.error(`Error : Command ${command_name} doesn\' t exists`)
+
+        if(command.bot_permissions !== undefined){
+            var perm = command.bot_permissions
+            for(var each of perm){
+                if(message.guild?.me?.permissions.has(each)) continue
+                else {
+                    var bot_perm_options : Permissions_options = {
+                        permission_error : each
+                    } 
+                    this.on_error(command_name, Error_type.Bot_Permissions, message, client, bot_perm_options, component_type)
+                    return
+                }
+            }
+        }
+
+        if(command.permissions !== undefined){
+            var perm = command.permissions
+            for(var each of perm){
+                if(message.member?.permissions.has(each)) continue
+                else {
+                    var perm_options : Permissions_options = {
+                        permission_error : each
+                    }
+                    this.on_error(command_name, Error_type.Permissions, message, client, perm_options, component_type)
+                    return
+                }
+            }
+        }
+
+        command.execute(message, client, args)
     }
 }
 
